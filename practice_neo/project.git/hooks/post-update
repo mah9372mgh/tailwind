@@ -1,0 +1,7 @@
+#!/bin/sh
+CURRENTPATH=$(readlink -f ../project)
+cd $CURRENTPATH || exit
+unset GIT_DIR
+git pull orgin master
+grunt build
+sudo xcms --build project=practice_neo
