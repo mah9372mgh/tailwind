@@ -1,0 +1,44 @@
+<script src="/xcms-tools/common-js/classes/ContactForm.js"></script>
+<script>
+	$(document).ready(function(){
+		new ContactForm($('form.contactForm'), {
+			onSubmit : function(){
+				$('contactStatus').removeClass('none').html("{{ tra('pleaseWaitWhileFormSubmiting') }}");
+			},
+			onError : function(){
+				$('#contactStatus').removeClass('none').html("{{ tra('formSubmitingFailed') }}");
+			},
+			onSuccess : function(){
+				$('#contactStatus').removeClass('none').html("{{ tra('formSubmittedSuccessfully') }}");
+			}
+		});
+	});
+</script>
+<div {% if properties.class %} class="{{ properties.class }}" {% endif %} {% if properties.id  %} id="{{ properties.id }}" {% endif %}>
+	
+	<form class="form" method="POST">
+		
+		<input name="data[contact_type]" type="hidden" value="{{ properties.type }}" required="required" />
+		<div class="contactForm">
+			{% if properties.name == 1 %}
+				<input name="data[name]" class="input" type="text" required="required" oninvalid="this.setCustomValidity('{{ tra('pleaseInsertName') }}')" placeholder="{{ tra('YourName') }}"/>
+			{% elseif properties.name == 2 %}
+				<input name="data[name]" type="text" placeholder="{{ tra('YourName') }}"/>
+			{% endif %}
+
+			{% if properties.email == 1 %}
+				<input name="data[email]" class="input" type="text" required="required" oninvalid="this.setCustomValidity('{{ tra('pleaseInsertEmail') }}')" placeholder="{{ tra('YourEmailAddress') }}" />
+			{% elseif properties.email == 2 %}
+				<input name="data[email]" type="text" placeholder="{{ tra('YourEmailAddress') }}" />
+			{% endif %}
+
+			{% if properties.message == 1 %}
+				<textarea rows="5" cols="50" name="data[message]" required="required" oninvalid="this.setCustomValidity('{{ tra('pleaseInsertMessage') }}')" placeholder="{{ tra('InsertYourMessage') }}"></textarea>
+			{% elseif properties.message == 2 %}
+				<textarea rows="5" cols="50" name="data[message]" placeholder="{{ tra('InsertYourMessage') }}"></textarea>
+			{% endif %}
+    </div>
+    <input class="submit" type="submit" value="{{ tra('submit') }}" />
+	</form>
+	<div id="contactStatus" class="none"></div>
+</div>

@@ -1,0 +1,69 @@
+<script src="/xcms-tools/common-js/v3/ContactForm.js"></script>
+<script>
+	console.log(ContactForm);
+	 document.addEventListener("DOMContentLoaded", function() {
+
+		var selectorForm = document.querySelector(".selecting_cnt form");
+
+		new ContactForm(selectorForm, {
+			onSubmit: function() {
+				var stat = document.getElementById("contactStatus");
+				stat.style.display = "none";
+				stat.innerHTML = "{{ tra('pleaseWaitWhileFormSubmiting')  }}";
+			},
+			onSuccess: function() {
+				var stat = document.getElementById("contactStatus");
+				stat.style.display = "block";
+				stat.innerHTML = "{{ tra('formSubmittedSuccessfully')  }}";
+			},
+			onError: function() {
+				var stat = document.getElementById("contactStatus");
+				stat.style.display = "block";
+				stat.innerHTML = "{{ tra('formSubmitingFailed')  }}";
+			}
+		});
+ });
+</script>
+<div {% if properties.class %}
+		class="{{ properties.class }} selecting_cnt"
+	{% endif %}
+	{% if properties.id  %}
+		id="{{ properties.id }}"
+	{% endif %}
+	>
+	<form class="contactForm" method="POST">
+	<input name="data[contact_type]" type="hidden" value="{{ properties.type }}" required="required" />
+	<div>
+		{% if properties.name == 1 %}
+			<input name="data[name]" type="text" required="required" oninvalid="this.setCustomValidity('{{ tra('pleaseInsertName')  }}')" placeholder="{{ tra('YourName') }}"/>
+		{% elseif properties.name == 2 %}
+			<input name="data[name]" type="text" placeholder="{{ tra('YourName') }}"/>
+		{% endif %}
+
+		{% if properties.email == 1  %}
+			<input name="data[email]" type="text" required="required" oninvalid="this.setCustomValidity('{{ tra('pleaseInsertEmail')  }}')" placeholder="{{ tra('YourEmailAddress') }}" />
+		{% elseif properties.email == 2 %}
+			<input name="data[email]" type="text"  placeholder="{{ tra('YourEmailAddress') }}" />
+		{% endif %}
+	</div>
+
+	{% if properties.message == 1 %}
+		<textarea rows="5" cols="50" name="data[message]" required="required" oninvalid="this.setCustomValidity('{{ tra('pleaseInsertMessage')  }}')" placeholder="{{ tra('InsertYourMessage') }}"></textarea>
+	{% elseif properties.message == 2 %}
+		<textarea rows="5" cols="50" name="data[message]" placeholder="{{ tra('InsertYourMessage') }}"></textarea>
+	{% endif %}
+
+	{% for extra in extras  %}
+		{% if extra.required %}
+		<input name="data[extra_userdata][{{ extra.name  }}]" required="required" oninvalid="this.setCustomValidity('{{ tra(extra.oninvalid)  }}')"  placeholder="{{ tra(extra.name)  }}" />
+		{% else %}
+		<input name="data[extra_userdata][{{ extra.name  }}]"   placeholder="{{ tra(extra.name)  }}" />
+		{% endif %}
+	{% endfor %}
+
+	<input class="submit" type="submit" value="{{ tra('submit') }}" />
+
+	</form>
+
+	<div id="contactStatus" class="none"></div>
+</div>

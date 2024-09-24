@@ -1,0 +1,49 @@
+{% if (file_data.type and file_data.type == '1') or file_data.extension == 'gif' %}
+<div  {{ attributes|raw }} class="type-resource type-resource-image position-{{ moreData.positionName }} {% if asMobile %}tabliq-mobile{% endif %}  {% if size.w %}class-size-{{ size.w }}x{{ size.h }}{% endif %}" data-position="{{ moreData.positionName }}" data-type="type-resource type-resource-image">
+  <a target="_blank"
+{% if advertisement_data.url %}
+    href="/advertisements/triggered/{{ id }}/"
+{% else %}
+    href="javascript:;"
+{% endif %}
+  rel="nofollow" title="{{ advertisement_data.title }}" >
+      <img loading="lazy" width="{{ size.w }}" height="{% if forceHeight %} {{ forceHeight }} {% else %} {{ size.h }} {% endif %}"   src="{{ file_data.view }}" alt="{{ advertisement_data.title }}"   />
+  </a>
+</div>
+{% elseif file_data.extension and file_data.extension == 'swf' %}
+<div {{ attributes|raw }}  style="width: {{ size.w }}px; height: {{ size.h }}px;" class="type-resource type-resource-swf">
+  <object
+    type="application/x-shockwave-flash"
+    data="{{ file_data.view }}"
+    width="{{ size.w }}" height="{{ size.h }}"
+{% if forceHeight %}
+    height="{{ forceHeight }}"
+{% else %}
+    height="{{ size.h }}"
+{% endif %}
+  >
+    <param name="movie" value="{{ file_data.view }}">
+    <param name="quality" value="best">
+    <param name="allowscriptaccess" value="always" />
+    <embed
+      type="application/x-shockwave-flash"
+      pluginspage="http://www.adobe.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash"
+      width="{{ size.w }}"
+{% if forceHeight %}
+      height="{{ forceHeight }}"
+{% else %}
+      height="{{ size.h }}"
+{% endif %}
+      src="{{ file_data.view }}"
+      quality="best"
+      allowscriptaccess="always"
+    >
+      <noembed>
+        <a href="http://www.adobe.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+          Get adobe flash player plugin
+        </a>
+      </noembed>
+    </embed>
+  </object>
+</div>
+{% endif %}

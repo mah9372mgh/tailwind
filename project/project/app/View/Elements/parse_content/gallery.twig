@@ -1,0 +1,14 @@
+<div id="gallery_twig" class="inline_gallery splide noprint">
+  <div class="splide__track">
+    {% set galleryTitle = '1' %}
+    <ul class="inline_gallery_list splide__list">
+      {% for file in noscript.files %}
+        {% if file.type == 1 %}
+          <li class="splide__slide" data-thumb="{{ file.view }}" data-src="{{ file.view }}" >
+            <img loading="lazy" src="{{ file.view }}" alt="{{ galleryTitle }}" width="600" height="400">
+          </li>  
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
